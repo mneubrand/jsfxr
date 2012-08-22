@@ -19,51 +19,6 @@
  */
 function SfxrParams() {
   //--------------------------------------------------------------------------
-  //
-  //  Properties
-  //
-  //--------------------------------------------------------------------------
-
-  /** If the parameters have been changed since last time (shouldn't used cached sound) */
-  this.paramsDirty;  
-  
-  this._waveType       =   0;    // Shape of the wave (0:square, 1:saw, 2:sin or 3:noise)
-  
-  this._masterVolume     =   0.5;  // Overall volume of the sound (0 to 1)
-  
-  this._attackTime       =  0.0;  // Length of the volume envelope attack (0 to 1)
-  this._sustainTime     =   0.0;  // Length of the volume envelope sustain (0 to 1)
-  this._sustainPunch     =   0.0;  // Tilts the sustain envelope for more 'pop' (0 to 1)
-  this._decayTime       =   0.0;  // Length of the volume envelope decay (yes, I know it's called release) (0 to 1)
-  
-  this._startFrequency     =   0.0;  // Base note of the sound (0 to 1)
-  this._minFrequency     =   0.0;  // If sliding, the sound will stop at this frequency, to prevent really low notes (0 to 1)
-  
-  this._slide         =   0.0;  // Slides the note up or down (-1 to 1)
-  this._deltaSlide       =   0.0;  // Accelerates the slide (-1 to 1)
-  
-  this._vibratoDepth     =   0.0;  // Strength of the vibrato effect (0 to 1)
-  this._vibratoSpeed     =   0.0;  // Speed of the vibrato effect (i.e. frequency) (0 to 1)
-  
-  this._changeAmount     =   0.0;  // Shift in note, either up or down (-1 to 1)
-  this._changeSpeed     =   0.0;  // How fast the note shift happens (only happens once) (0 to 1)
-  
-  this._squareDuty       =   0.0;  // Controls the ratio between the up and down states of the square wave, changing the tibre (0 to 1)
-  this._dutySweep       =   0.0;  // Sweeps the duty up or down (-1 to 1)
-  
-  this._repeatSpeed     =   0.0;  // Speed of the note repeating - certain variables are reset each time (0 to 1)
-  
-  this._phaserOffset     =   0.0;  // Offsets a second copy of the wave by a small phase, changing the tibre (-1 to 1)
-  this._phaserSweep     =   0.0;  // Sweeps the phase up or down (-1 to 1)
-  
-  this._lpFilterCutoff     =   0.0;  // Frequency at which the low-pass filter starts attenuating higher frequencies (0 to 1)
-  this._lpFilterCutoffSweep =   0.0;  // Sweeps the low-pass cutoff up or down (-1 to 1)
-  this._lpFilterResonance   =   0.0;  // Changes the attenuation rate for the low-pass filter, changing the timbre (0 to 1)
-  
-  this._hpFilterCutoff     =   0.0;  // Frequency at which the high-pass filter starts attenuating lower frequencies (0 to 1)
-  this._hpFilterCutoffSweep =   0.0;  // Sweeps the high-pass cutoff up or down (-1 to 1)
-  
-  //--------------------------------------------------------------------------
   //  
   //  Settings String Methods
   //
@@ -77,11 +32,6 @@ function SfxrParams() {
   this.setSettingsString = function setSettingsString(string)
   {
     var values = string.split(",");
-    
-    if (values.length != 24) {
-      return false;
-    }
-    
     this.waveType =         parseInt(values[0]) || 0;
     this.attackTime =        parseFloat(values[1]) || 0;
     this.sustainTime =        parseFloat(values[2]) || 0;
@@ -106,8 +56,6 @@ function SfxrParams() {
     this.hpFilterCutoff =      parseFloat(values[21]) || 0;
     this.hpFilterCutoffSweep =    parseFloat(values[22]) || 0;
     this.masterVolume =       parseFloat(values[23]) || 0;
-    
-    return true;
   }   
   
 }
