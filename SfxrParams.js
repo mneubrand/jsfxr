@@ -24,8 +24,6 @@ function SfxrParams() {
   //
   //--------------------------------------------------------------------------
 
-  // Variables will be kept alive by function closures of the member functions below
-
   /** If the parameters have been changed since last time (shouldn't used cached sound) */
   this.paramsDirty;  
   

@@ -26,7 +26,7 @@ function SfxrSynth() {
   //
   //--------------------------------------------------------------------------
   
-  var _params = new SfxrParams();  // Params instance
+  this._params = new SfxrParams();  // Params instance
 
   //--------------------------------------------------------------------------
   //
@@ -50,7 +50,7 @@ function SfxrSynth() {
   var _envelopeOverLength0;      // 1 / _envelopeLength0 (for quick calculations)
   var _envelopeOverLength1;      // 1 / _envelopeLength1 (for quick calculations)
   var _envelopeOverLength2;      // 1 / _envelopeLength2 (for quick calculations)
-  var _envelopeFullLength;        // Full length of the volume envelop (and therefore sound)
+  this._envelopeFullLength;        // Full length of the volume envelop (and therefore sound)
   
   var _sustainPunch;          // The punch factor (louder at begining of sustain)
   
@@ -111,50 +111,6 @@ function SfxrSynth() {
   //
   //--------------------------------------------------------------------------
   
-  // Adapted from http://html5-demos.appspot.com/static/html5-whats-new/template/index.html#31
-  this.getWave = function(str) {
-    // Initialize header
-    var header = new Uint8Array([
-      0x52,0x49,0x46,0x46, // "RIFF"
-      0, 0, 0, 0,          // put total size here
-      0x57,0x41,0x56,0x45, // "WAVE"
-      0x66,0x6d,0x74,0x20, // "fmt "
-      16,0,0,0,            // size of the following
-      1, 0,                // PCM format
-      1, 0,                // Mono: 1 channel
-      0x44,0xAC,0,0,       // 44,100 samples per second
-      0x88,0x58,0x01,0,    // byte rate: two bytes per sample
-      2, 0,                // aligned on every two bytes
-      16, 0,               // 16 bits per sample
-      0x64,0x61,0x74,0x61, // "data"
-      0, 0, 0, 0           // put number of samples here
-    ]);  // Note: we just want the ArrayBuffer.
-
-    // Initialize SfxrParams
-    _params.setSettingsString(str);
-
-    // Synthesize Wave
-    this.reset(true);
-    var samples = new Uint16Array(_envelopeFullLength);
-    var used = this.synthWave(samples, _envelopeFullLength, false);
-
-    var soundLength = used * 2;
-    var dv = new DataView(header.buffer);
-    dv.setInt32(4, 36 + soundLength, true);
-    dv.setInt32(40, soundLength, true);
-
-    var blob = new Blob([header, samples.subarray(0, used-1)], { "type" : "audio\/wav" });
-
-    var url = window.webkitURL.createObjectURL(blob);
-    window.open(url, 'test.wav');
-
-    /*var player = new Audio(url);
-    player.play();
-    player.addEventListener('ended', function(e) {
-      window.webkitURL.revokeObjectURL(url);
-    }, false);*/
-  }
-
   /**
    * Resets the runing variables from the params
    * Used once at the start (total reset) and for the repeat effect (partial reset)
@@ -162,7 +118,7 @@ function SfxrSynth() {
    */
   this.reset = function reset(totalReset) {
     // Shorter reference
-    var p = _params;
+    var p = this._params;
     
     _period = 100.0 / (p.startFrequency * p.startFrequency + 0.001);
     _maxPeriod = 100.0 / (p.minFrequency * p.minFrequency + 0.001);
@@ -241,7 +197,7 @@ function SfxrSynth() {
       _envelopeLength1 = p.sustainTime * p.sustainTime * 100000.0;
       _envelopeLength2 = p.decayTime * p.decayTime * 100000.0 + 10;
       _envelopeLength = _envelopeLength0;
-      _envelopeFullLength = _envelopeLength0 + _envelopeLength1 + _envelopeLength2;
+      this._envelopeFullLength = _envelopeLength0 + _envelopeLength1 + _envelopeLength2;
       
       _envelopeOverLength0 = 1.0 / _envelopeLength0;
       _envelopeOverLength1 = 1.0 / _envelopeLength1;
@@ -498,3 +454,50 @@ function SfxrSynth() {
     return length;
   }
 }
+
+// Adapted from http://html5-demos.appspot.com/static/html5-whats-new/template/index.html#31
+SfxrSynth.prototype.getWave = function(str) {
+  // Initialize header
+  var header = new Uint8Array([
+    0x52,0x49,0x46,0x46, // "RIFF"
+    0, 0, 0, 0,          // put total size here
+    0x57,0x41,0x56,0x45, // "WAVE"
+    0x66,0x6d,0x74,0x20, // "fmt "
+    16,0,0,0,            // size of the following
+    1, 0,                // PCM format
+    1, 0,                // Mono: 1 channel
+    0x44,0xAC,0,0,       // 44,100 samples per second
+    0x88,0x58,0x01,0,    // byte rate: two bytes per sample
+    2, 0,                // aligned on every two bytes
+    16, 0,               // 16 bits per sample
+    0x64,0x61,0x74,0x61, // "data"
+    0, 0, 0, 0           // put number of samples here
+  ]);  // Note: we just want the ArrayBuffer.
+
+  // Initialize SfxrParams
+  this._params.setSettingsString(str);
+
+  // Synthesize Wave
+  this.reset(true);
+  var samples = new Uint16Array(this._envelopeFullLength);
+  var used = this.synthWave(samples, this._envelopeFullLength, false);
+
+  var soundLength = used * 2;
+  var dv = new DataView(header.buffer);
+  dv.setInt32(4, 36 + soundLength, true);
+  dv.setInt32(40, soundLength, true);
+
+  var blob = new Blob([header, samples.subarray(0, used-1)], { "type" : "audio\/wav" });
+
+  var url = window.webkitURL.createObjectURL(blob);
+  window.open(url, 'test.wav');
+
+  /*var player = new Audio(url);
+  player.play();
+  player.addEventListener('ended', function(e) {
+    window.webkitURL.revokeObjectURL(url);
+  }, false);*/
+}
+
+window['SfxrSynth'] = SfxrSynth; // <-- Constructor
+SfxrSynth.prototype['getWave'] = SfxrSynth.prototype.getWave;
