@@ -1,0 +1,36 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>jsfxr demo</title>
+  <script src="SfxrParams.js"></script>
+  <script src="SfxrSynth.js"></script>
+  <script>
+    var synth = new SfxrSynth();
+
+    function playSound(params) {
+      var url = synth.getWave(as3fxrSettingsString);
+      var player = new Audio(url);
+      player.play();
+      player.addEventListener('ended', function(e) {
+        window.URL.revokeObjectURL(url);
+      }, false);
+    }
+
+  </script>
+</head>
+
+<body>
+  <form>
+    <button onclick="playSound('0,,0.2122,,0.0784,0.7757,0.4121,-0.335,,,,,,0.6115,-0.3291,,0.0478,-0.1174,1,,,0.0534,,0.5')">Play Sound 1</button>
+    <button onclick="playSound('0,,0.2122,,0.0784,0.7757,0.4121,-0.335,,,,,,0.6115,-0.3291,,0.0478,-0.1174,1,,,0.0534,,0.5')">Play Sound 2</button>
+    <button onclick="playSound('0,,0.2122,,0.0784,0.7757,0.4121,-0.335,,,,,,0.6115,-0.3291,,0.0478,-0.1174,1,,,0.0534,,0.5')">Play Sound 3</button>
+
+    <br/>
+
+    <label for="soundsettings">Paste as3fxr settings string here: </label>
+    <input type="text" id="soundsettings" size="100"/>
+    <button onclick="playSound(document.getElementById('soundsettings').value)">Play Custom Sound</button>
+  </form>
+</body>
+</html>
+

@@ -489,15 +489,10 @@ SfxrSynth.prototype.getWave = function(str) {
 
   var blob = new Blob([header, samples.subarray(0, used-1)], { "type" : "audio\/wav" });
 
-  var url = window.webkitURL.createObjectURL(blob);
-  window.open(url, 'test.wav');
-
-  /*var player = new Audio(url);
-  player.play();
-  player.addEventListener('ended', function(e) {
-    window.webkitURL.revokeObjectURL(url);
-  }, false);*/
+  var url = window.URL.createObjectURL(blob);
+  return url;
 }
 
+//Exports for Closure
 window['SfxrSynth'] = SfxrSynth; // <-- Constructor
 SfxrSynth.prototype['getWave'] = SfxrSynth.prototype.getWave;
