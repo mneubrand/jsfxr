@@ -445,7 +445,7 @@ function SfxrSynth() {
         _bufferSample /= _sampleCount;
         _sampleCount = 0;
 
-        buffer[i] = parseInt(32000.0 * Math.abs(_bufferSample));
+        buffer[i] = parseInt(32000.0 * _bufferSample);
         _bufferSample = 0.0;
       }
     }
