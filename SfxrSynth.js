@@ -445,8 +445,7 @@ function SfxrSynth() {
         _bufferSample /= _sampleCount;
         _sampleCount = 0;
 
-        console.log(i + ': ' + _bufferSample);
-        buffer[i] = parseInt(32000.0 * _bufferSample);
+        buffer[i] = parseInt(32000.0 * Math.abs(_bufferSample));
         _bufferSample = 0.0;
       }
     }
@@ -479,18 +478,19 @@ SfxrSynth.prototype.getWave = function(str) {
 
   // Synthesize Wave
   this.reset(true);
+  this._envelopeFullLength = parseInt(this._envelopeFullLength);
   var samples = new Uint16Array(this._envelopeFullLength);
   var used = this.synthWave(samples, this._envelopeFullLength, false);
 
   var soundLength = used * 2;
-  var dv = new DataView(header.buffer);
-  dv.setInt32(4, 36 + soundLength, true);
-  dv.setInt32(40, soundLength, true);
+  var dv = new Uint32Array(header.buffer);
+  dv[1] = 36 + soundLength;
+  dv[10] = soundLength;
 
-  var blob = new Blob([header, samples.subarray(0, used-1)], { "type" : "audio\/wav" });
-
-  var url = window.URL.createObjectURL(blob);
-  return url;
+  var blob = new Blob([header.buffer, samples.subarray(0, used-1).buffer], { "type" : "audio/wav" });
+  
+  var url = window.URL || window.webkitURL;
+  return url.createObjectURL(blob);
 }
 
 //Exports for Closure

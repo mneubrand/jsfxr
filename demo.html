@@ -5,15 +5,24 @@
   <script src="SfxrParams.js"></script>
   <script src="SfxrSynth.js"></script>
   <script>
+    var url = window.URL || window.webkitURL;
     var synth = new SfxrSynth();
 
     function playSound(params) {
-      var url = synth.getWave(as3fxrSettingsString);
-      var player = new Audio(url);
-      player.play();
-      player.addEventListener('ended', function(e) {
-        window.URL.revokeObjectURL(url);
-      }, false);
+      try {
+        var soundURL = synth.getWave(params);
+        var player = new Audio();
+        player.addEventListener('error', function(e) {
+          console.log("Error: " + player.error.code);
+        }, false);
+        player.src = soundURL;
+        player.play();
+        player.addEventListener('ended', function(e) {
+          url.revokeObjectURL(soundURL);
+        }, false);
+      } catch(e) {
+        console.log(e.message);
+      }
     }
 
   </script>
@@ -21,15 +30,15 @@
 
 <body>
   <form>
-    <button onclick="playSound('0,,0.2122,,0.0784,0.7757,0.4121,-0.335,,,,,,0.6115,-0.3291,,0.0478,-0.1174,1,,,0.0534,,0.5')">Play Sound 1</button>
-    <button onclick="playSound('0,,0.2122,,0.0784,0.7757,0.4121,-0.335,,,,,,0.6115,-0.3291,,0.0478,-0.1174,1,,,0.0534,,0.5')">Play Sound 2</button>
-    <button onclick="playSound('0,,0.2122,,0.0784,0.7757,0.4121,-0.335,,,,,,0.6115,-0.3291,,0.0478,-0.1174,1,,,0.0534,,0.5')">Play Sound 3</button>
+    <button onclick="playSound('3,,0.3708,0.5822,0.3851,0.0584,,-0.0268,,,,-0.0749,0.7624,,,,,,1,,,,,0.5'); return false;">Play Explosion</button>
+    <button onclick="playSound('1,,0.3201,,0.4743,0.3202,,0.0833,,0.4207,0.4278,,,,,,,,1,,,,,0.5'); return false;">Play Powerup</button>
+    <button onclick="playSound('0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5'); return false;">Play Jump</button>
 
     <br/>
 
     <label for="soundsettings">Paste as3fxr settings string here: </label>
     <input type="text" id="soundsettings" size="100"/>
-    <button onclick="playSound(document.getElementById('soundsettings').value)">Play Custom Sound</button>
+    <button onclick="playSound(document.getElementById('soundsettings').value); return false;">Play Custom Sound</button>
   </form>
 </body>
 </html>
