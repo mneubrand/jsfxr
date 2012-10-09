@@ -2,15 +2,13 @@
 <head>
   <meta charset="utf-8">
   <title>jsfxr demo</title>
-  <script src="SfxrParams.js"></script>
-  <script src="SfxrSynth.js"></script>
+  <script src="jsfxr.min.js"></script>
   <script>
     var url = window.URL || window.webkitURL;
-    var synth = new SfxrSynth();
 
     function playSound(params) {
       try {
-        var soundURL = synth.getWave(params);
+        var soundURL = jsfxr(params);
         var player = new Audio();
         player.addEventListener('error', function(e) {
           console.log("Error: " + player.error.code);
