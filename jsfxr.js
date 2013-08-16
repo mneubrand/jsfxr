@@ -25,38 +25,36 @@ function SfxrParams() {
   //--------------------------------------------------------------------------
 
   /**
-   * Parses a settings string into the parameters
-   * @param array Array of the settings values
+   * Parses a settings array into the parameters
+   * @param array Array of the settings values, where elements 0 - 23 are
+   *                a: waveType
+   *                b: attackTime
+   *                c: sustainTime
+   *                d: sustainPunch
+   *                e: decayTime
+   *                f: startFrequency
+   *                g: minFrequency
+   *                h: slide
+   *                i: deltaSlide
+   *                j: vibratoDepth
+   *                k: vibratoSpeed
+   *                l: changeAmount
+   *                m: changeSpeed
+   *                n: squareDuty
+   *                o: dutySweep
+   *                p: repeatSpeed
+   *                q: phaserOffset
+   *                r: phaserSweep
+   *                s: lpFilterCutoff
+   *                t: lpFilterCutoffSweep
+   *                u: lpFilterResonance
+   *                v: hpFilterCutoff
+   *                w: hpFilterCutoffSweep
+   *                x: masterVolume
    * @return If the string successfully parsed
    */
   this.setSettings = function(values)
   {
-    /*
-    a: waveType
-    b: attackTime
-    c: sustainTime
-    d: sustainPunch
-    e: decayTime
-    f: startFrequency
-    g: minFrequency
-    h: slide
-    i: deltaSlide
-    j: vibratoDepth
-    k: vibratoSpeed
-    l: changeAmount
-    m: changeSpeed
-    n: squareDuty
-    o: dutySweep
-    p: repeatSweep
-    q: phaserOffset
-    r: phaserSweep
-    s: lpFilterCutoff
-    t: lpFilterCutoffSweep
-    u: lpFilterResonance
-    v: hpFilterCutoff
-    w: hpFilterCutoffSweep
-    x: masterVolume
-    */
     for ( var i = 0; i < 24; i++ )
     {
       this[String.fromCharCode( 97 + i )] = values[i] || 0;
