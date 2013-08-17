@@ -22,6 +22,15 @@
         console.log(e.message);
       }
     }
+      
+    function playString(str) {
+       var temp = str.split(",");
+       var params = new Array();
+       for(var i = 0; i < temp.length; i++) {
+         params[i] = parseFloat(temp[i]);
+       }
+       playSound(params);
+    }
 
   </script>
 </head>
@@ -34,10 +43,9 @@
 
     <br/>
 
-    <label for="soundsettings">Paste as3fxr settings string here: </label>
+    <label for="soundsettings">Paste as3fxr string here: </label>
     <input type="text" id="soundsettings" size="100"/>
-    <button onclick="playSound(document.getElementById('soundsettings').value); return false;">Play Custom Sound</button>
+    <button onclick="playString(document.getElementById('soundsettings').value); return false;">Play Custom Sound</button>
   </form>
 </body>
 </html>
-
