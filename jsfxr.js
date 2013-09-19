@@ -17,6 +17,7 @@
  *
  * @author Thomas Vian
  */
+/** @constructor */
 function SfxrParams() {
   //--------------------------------------------------------------------------
   //
@@ -94,6 +95,7 @@ function SfxrParams() {
  *
  * @author Thomas Vian
  */
+/** @constructor */
 function SfxrSynth() {
   // All variables are kept alive through function closures
 
