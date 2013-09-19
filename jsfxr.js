@@ -155,7 +155,7 @@ function SfxrSynth() {
       _dutySweep  = -p['o'] * .00005;
     }
 
-    _changeAmount = p['l'] > 0 ? 1 - p['l'] * p['l'] * .9 : 1 + p['l'] * p['l'] * 10;
+    _changeAmount =  1 + p['l'] * p['l'] * (p['l'] > 0 ? -.9 : 10);
     _changeTime   = 0;
     _changeLimit  = p['m'] == 1 ? 0 : (1 - p['m']) * (1 - p['m']) * 20000 + 32;
   }
@@ -389,9 +389,9 @@ function SfxrSynth() {
             break;
           case 2: // Sine wave (fast and accurate approx)
             _pos = _phase / _periodTemp;
-            _pos = _pos > .5 ? (_pos - 1) * 6.28318531 : _pos * 6.28318531;
-            _sample = _pos < 0 ? 1.27323954 * _pos + .405284735 * _pos * _pos : 1.27323954 * _pos - .405284735 * _pos * _pos;
-            _sample = _sample < 0 ? .225 * (_sample *-_sample - _sample) + _sample : .225 * (_sample * _sample - _sample) + _sample;
+            _pos = (_pos > .5 ? _pos - 1 : _pos) * 6.28318531;
+            _sample = 1.27323954 * _pos + .405284735 * _pos * _pos (_pos < 0 ? 1 : -1);
+            _sample = .225 * ((_sample < 0 ? -1 : 1) * _sample * _sample  - _sample) + _sample;
             break;
           case 3: // Noise
             _sample = _noiseBuffer[Math.abs(_phase * 32 / _periodTemp | 0)];
