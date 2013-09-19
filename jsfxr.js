@@ -170,9 +170,10 @@ function SfxrSynth() {
     // Calculating the length is all that remained here, everything else moved somewhere
     _envelopeLength0 = p['b']  * p['b']  * 100000;
     _envelopeLength1 = p['c'] * p['c'] * 100000;
-    _envelopeLength2 = p['e']   * p['e']   * 100000 + 10;
+    _envelopeLength2 = p['e']   * p['e']   * 100000 + 12;
     // Full length of the volume envelop (and therefore sound)
-    return _envelopeLength0 + _envelopeLength1 + _envelopeLength2 | 0;
+    // Make sure the length can be divided by 3 so we will not need the padding "==" after base64 encode
+    return ((_envelopeLength0 + _envelopeLength1 + _envelopeLength2) / 3 | 0) * 3;
   }
 
   /**
@@ -477,6 +478,5 @@ window['jsfxr'] = function(settings) {
     var a = data[i] << 16 | data[i + 1] << 8 | data[i + 2];
     output += base64Characters[a >> 18] + base64Characters[a >> 12 & 63] + base64Characters[a >> 6 & 63] + base64Characters[a & 63];
   }
-  i -= used;
-  return output.slice(0, output.length - i) + '=='.slice(0, i);
+  return output;
 }
