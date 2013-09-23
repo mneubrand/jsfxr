@@ -17,6 +17,7 @@
  *
  * @author Thomas Vian
  */
+/** @constructor */
 function SfxrParams() {
   //--------------------------------------------------------------------------
   //
@@ -94,6 +95,7 @@ function SfxrParams() {
  *
  * @author Thomas Vian
  */
+/** @constructor */
 function SfxrSynth() {
   // All variables are kept alive through function closures
 
@@ -153,7 +155,7 @@ function SfxrSynth() {
       _dutySweep  = -p['o'] * .00005;
     }
 
-    _changeAmount = p['l'] > 0 ? 1 - p['l'] * p['l'] * .9 : 1 + p['l'] * p['l'] * 10;
+    _changeAmount =  1 + p['l'] * p['l'] * (p['l'] > 0 ? -.9 : 10);
     _changeTime   = 0;
     _changeLimit  = p['m'] == 1 ? 0 : (1 - p['m']) * (1 - p['m']) * 20000 + 32;
   }
@@ -168,9 +170,10 @@ function SfxrSynth() {
     // Calculating the length is all that remained here, everything else moved somewhere
     _envelopeLength0 = p['b']  * p['b']  * 100000;
     _envelopeLength1 = p['c'] * p['c'] * 100000;
-    _envelopeLength2 = p['e']   * p['e']   * 100000 + 10;
+    _envelopeLength2 = p['e']   * p['e']   * 100000 + 12;
     // Full length of the volume envelop (and therefore sound)
-    return _envelopeLength0 + _envelopeLength1 + _envelopeLength2 | 0;
+    // Make sure the length can be divided by 3 so we will not need the padding "==" after base64 encode
+    return ((_envelopeLength0 + _envelopeLength1 + _envelopeLength2) / 3 | 0) * 3;
   }
 
   /**
@@ -387,9 +390,9 @@ function SfxrSynth() {
             break;
           case 2: // Sine wave (fast and accurate approx)
             _pos = _phase / _periodTemp;
-            _pos = _pos > .5 ? (_pos - 1) * 6.28318531 : _pos * 6.28318531;
-            _sample = _pos < 0 ? 1.27323954 * _pos + .405284735 * _pos * _pos : 1.27323954 * _pos - .405284735 * _pos * _pos;
-            _sample = _sample < 0 ? .225 * (_sample *-_sample - _sample) + _sample : .225 * (_sample * _sample - _sample) + _sample;
+            _pos = (_pos > .5 ? _pos - 1 : _pos) * 6.28318531;
+            _sample = 1.27323954 * _pos + .405284735 * _pos * _pos (_pos < 0 ? 1 : -1);
+            _sample = .225 * ((_sample < 0 ? -1 : 1) * _sample * _sample  - _sample) + _sample;
             break;
           case 3: // Noise
             _sample = _noiseBuffer[Math.abs(_phase * 32 / _periodTemp | 0)];
@@ -475,6 +478,5 @@ window['jsfxr'] = function(settings) {
     var a = data[i] << 16 | data[i + 1] << 8 | data[i + 2];
     output += base64Characters[a >> 18] + base64Characters[a >> 12 & 63] + base64Characters[a >> 6 & 63] + base64Characters[a & 63];
   }
-  i -= used;
-  return output.slice(0, output.length - i) + '=='.slice(0, i);
+  return output;
 }
