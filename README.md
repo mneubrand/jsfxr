@@ -5,7 +5,7 @@ as3fxr (http://code.google.com/p/as3sfxr/) synth port to JavaScript created for 
 
 Current version contains various performance/browser compatibility improvements by [@maettig](https://twitter.com/maettig)
 
-New minified size is 2797 bytes (Closure with Advanced Mode, was 3169 bytes) thanks to improvements by [@chandlerprall](https://github.com/chandlerprall). 
+New minified size is 2517 bytes (Closure with Advanced Mode) thanks to improvements by [@chandlerprall](https://github.com/chandlerprall) and [@gheja](https://github.com/gheja). 
 
 Pull requests for further improvements are welcome ;)
 
