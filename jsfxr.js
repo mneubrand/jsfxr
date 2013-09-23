@@ -391,7 +391,7 @@ function SfxrSynth() {
           case 2: // Sine wave (fast and accurate approx)
             _pos = _phase / _periodTemp;
             _pos = (_pos > .5 ? _pos - 1 : _pos) * 6.28318531;
-            _sample = 1.27323954 * _pos + .405284735 * _pos * _pos (_pos < 0 ? 1 : -1);
+            _sample = 1.27323954 * _pos + .405284735 * _pos * _pos * (_pos < 0 ? 1 : -1);
             _sample = .225 * ((_sample < 0 ? -1 : 1) * _sample * _sample  - _sample) + _sample;
             break;
           case 3: // Noise
