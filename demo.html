@@ -2,6 +2,16 @@
 <head>
   <meta charset="utf-8">
   <title>jsfxr demo</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
   <script src="jsfxr.js"></script>
   <script>
     var url = window.URL || window.webkitURL;
@@ -36,16 +46,26 @@
 </head>
 
 <body>
+  <div class="container">
+  <h1>jsfxr demo</h1>
+  <p><a href="http://code.google.com/p/as3sfxr/">as3fxr</a> synth port to JavaScript created for js13kGames</p>
   <form>
-    <button onclick="playSound([3,,0.3708,0.5822,0.3851,0.0584,,-0.0268,,,,-0.0749,0.7624,,,,,,1,,,,,0.5]); return false;">Play Explosion</button>
-    <button onclick="playSound([1,,0.3201,,0.4743,0.3202,,0.0833,,0.4207,0.4278,,,,,,,,1,,,,,0.5]); return false;">Play Powerup</button>
-    <button onclick="playSound([0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5]); return false;">Play Jump</button>
+    <p>
+    <a class="btn btn-default" href="#" role="button" onclick="playSound([3,,0.3708,0.5822,0.3851,0.0584,,-0.0268,,,,-0.0749,0.7624,,,,,,1,,,,,0.5]); return false;">Play Explosion</a>
+    <a class="btn btn-default" href="#" role="button" onclick="playSound([1,,0.3201,,0.4743,0.3202,,0.0833,,0.4207,0.4278,,,,,,,,1,,,,,0.5]); return false;">Play Powerup</a>
+    <a class="btn btn-default" href="#" role="button" onclick="playSound([0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5]); return false;">Play Jump</a>
+    </p>
 
-    <br/>
-
+    <p>
     <label for="soundsettings">Paste as3fxr string here: </label>
     <input type="text" id="soundsettings" size="100"/>
-    <button onclick="playString(document.getElementById('soundsettings').value); return false;">Play Custom Sound</button>
+    <a class="btn btn-default" href="#" role="button" onclick="playString(document.getElementById('soundsettings').value); return false;">Play Custom Sound</a>
+    </p>
+
+    <p>
+      Hosted as3sfxr by Tom Vian: <a href="http://www.superflashbros.net/as3sfxr/">http://www.superflashbros.net/as3sfxr/</a>
+    </p>
   </form>
+  </div>
 </body>
 </html>
