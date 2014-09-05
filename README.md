@@ -3,6 +3,8 @@ jsfxr
 
 as3fxr (http://code.google.com/p/as3sfxr/) synth port to JavaScript created for js13kGames
 
+Licensed under Apache License 2.0
+
 Current version contains various performance/browser compatibility improvements by [@maettig](https://twitter.com/maettig)
 
 New minified size is 2517 bytes (Closure with Advanced Mode) thanks to improvements by [@chandlerprall](https://github.com/chandlerprall) and [@gheja](https://github.com/gheja). 
